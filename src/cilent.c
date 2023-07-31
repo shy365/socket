@@ -190,7 +190,7 @@ int main(int argc ,char*argv[])
 			return -1;
 
 		}
-		ret = pthread_join(tid_recv,NULL);
+		ret = pthread_join(tid_send,NULL);
 		if(ret < 0)
 		{
 			perror("join tid_send failed\n");
