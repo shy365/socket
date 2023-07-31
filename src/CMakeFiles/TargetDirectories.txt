@@ -1,0 +1,4 @@
+/home/fuhao/project/socket/src/CMakeFiles/rebuild_cache.dir
+/home/fuhao/project/socket/src/CMakeFiles/server.dir
+/home/fuhao/project/socket/src/CMakeFiles/edit_cache.dir
+/home/fuhao/project/socket/src/CMakeFiles/cilent.dir
