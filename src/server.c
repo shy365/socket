@@ -12,6 +12,8 @@
 
 
 #define SERVER_PORT 8888
+#define WRITE_PATH "../out/rec_A.txt"
+#define READ_PATH "../data/B.txt"
 
 static int sockfd,connfd = -1;
 struct sockaddr_in server_addr = {0};
@@ -29,7 +31,7 @@ void *recv_write_thread(void *arg)
 	char recvbuf[4];
 		
 
-	fd = open("../out/rec_A.txt",O_RDWR | O_CREAT | O_APPEND,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+	fd = open(WRITE_PATH,O_RDWR | O_CREAT | O_APPEND,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
 	if(fd == -1)
 	{
 		printf("%s open file filed\n",__func__);
@@ -84,7 +86,7 @@ void *read_send_thread(void *arg)
 	int file_end_flag = -1;
 	char readbuf[6] = {0};
 
-	fd = open("../data/B.txt",O_RDONLY);
+	fd = open(READ_PATH,O_RDONLY);
 	if(-1 == fd)
 	{
 		perror("open file failed");
@@ -139,7 +141,6 @@ void *wait_client_thread(void *arg)
 		if(0 > connfd)
 		{
 			perror("accept error");
-			sleep(1);
 			continue;
 		}
 		
@@ -194,8 +195,10 @@ int main(void)
 		perror("listen error");
 		close(sockfd);
 		exit(-1);
-
 	}
+	remove("../out/rec_B.txt");
+	remove(WRITE_PATH);
+
 
 //创建线程
 	ret = pthread_create(&tid_recv,NULL,recv_write_thread,NULL);

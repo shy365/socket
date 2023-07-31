@@ -12,7 +12,8 @@
 
 #define SERVER_PORT  8888
 #define SERVER_IP	"127.0.0.1"
-
+#define WRITE_PATH "../out/rec_B.txt"
+#define READ_PATH "../data/A.txt"
 
 static int sockfd,fd1,fd2;
 static long read_pos;
@@ -24,8 +25,7 @@ void *recv_write_thread()
 	int ret;
 	char recvbuf[6];
 		
-
-	fd1 = open("../out/rec_B.txt",O_RDWR | O_CREAT | O_APPEND,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+	fd1 = open(WRITE_PATH,O_RDWR | O_CREAT | O_APPEND,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
 	if(fd1 == -1)
 	{
 		printf("%s open file filed\n",__func__);
@@ -70,7 +70,7 @@ void *read_send_thread()
 	int ret;	
 	int file_end_flag = -1;
 
-	fd2 = open("../data/A.txt",O_RDONLY);
+	fd2 = open(READ_PATH,O_RDONLY);
 	if(-1 == fd2)
 	{
 		perror("open file failed");
@@ -109,12 +109,12 @@ void *read_send_thread()
 
 
 
-int main(void)
+int main(int argc ,char*argv[])
 {
 	int ret;
 	char signal[10] = {"start"};
 	pthread_t tid_recv,tid_send;
-
+	
 	sockfd = socket(AF_INET,SOCK_STREAM,0);
 	if(0 > sockfd)
 	{
@@ -182,7 +182,7 @@ int main(void)
 			close(sockfd);
 			exit(0);
 		}
-	}
+		}
 		ret = pthread_join(tid_recv,NULL);
 		if(ret < 0)
 		{
